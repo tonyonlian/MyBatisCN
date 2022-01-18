@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tunyl.demo.day1.mapper.EmployeeMapper">
+<!--    namespace : 映射文件命名空间-->
+<!--    id:标签唯一id-->
+<!--    resultType:返回结果类型-->
+    <select id="selectByEmp" resultType="com.tunyl.demo.day1.entity.Employee">
+        select * from employee where id = #{id}
+    </select>
+</mapper>

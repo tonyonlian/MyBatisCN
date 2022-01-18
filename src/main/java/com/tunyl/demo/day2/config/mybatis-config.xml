@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+<!--    1.properties配置-->
+<!--    resource:引入类路径下的配置文件-->
+<!--    url:引入网络下或磁盘路径下的配置文件-->
+    <properties resource="com/tunyl/demo/day2/config/db.properties"></properties>
+<!--    2.设置mybatis,下线线数据库字段映射驼峰命令java属性-->
+<!--    name:要设置的属性-->
+<!--    value：要设置的属性值-->
+    <settings>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
+<!--    3.别名处理器，可以给java类型起别名-->
+<!--    typeAlias 为java类型起别名-->
+<!--    type: 指定要起别名的类的全限定名，默认为简单类名，不区分大小写-->
+<!--    alias: 别名-->
+    <typeAliases>
+<!--        方式1：-->
+<!--        <typeAlias type="com.tunyl.demo.day2.entity.Employee" alias="employee1"/>-->
+
+<!--       方式2： 批量起别名，为指定包下的类或子包中的类起别名,别名为简单类名，如果子包中的简单类名有冲突则可在类上加@Alias("xxx")来区别-->
+        <package name="com.tunyl.demo.day2.entity"/>
+    </typeAliases>
+
+<!--    4.类型处理器：建立数据库类型与java类型的转换-->
+<!--    <typeHandlers></typeHandlers>-->
+
+<!--   5.允许拦截执行过程中的关键步骤，默认mybatis允许拦截的方法Executor、ParameterHandler、ResultSetHandler、StatementHandler -->
+<!--    <plugins>-->
+<!--        <plugin interceptor=""></plugin>-->
+<!--    </plugins>-->
+
+<!--   6.环境设置，mybatis可以配置多套环境，environment为配置一个环境-->
+<!--        default可以用于切换环境，指定要使用的环境id-->
+<!--        environment为配置一个环境，id代表环境的唯一标识，环境中两个标签-->
+<!--           transactionManager : 事务管理器-->
+<!--                  type: 事务管理器的类型；JDBC(JdbcTransactionFactory.class)|MANAGE(ManagedTransactionFactory.class)-->
+<!--                         自定义，实现TransactionFactory的接口就可以自定义-->
+<!--           dataSource: 数据源-->
+<!--                  type: POOLED(PooledDataSourceFactory.class)|UNPOOLED(UnpooledDataSourceFactory)|JNDI(JndiDataSourceFactory)-->
+<!--                        自定义，实现DataSourceFactory接口就可以自定义-->
+    <environments default="development">
+        <environment id="test">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc.driver}"/>
+                <property name="url" value="jdbc:mysql://localhost:3306/dev?useUnicode=true&amp;characterEncoding=utf8"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc.driver}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+<!--    7. databaseIdProvider支持多数据库厂商-->
+<!--       type= DB_VENDOR(VendorDatabaseIdProvider.class) 作用就是得到数据库厂商的标识（通过驱动getDatabaseProductName()获取-->
+<!--       MySQL Oracle-->
+    <databaseIdProvider type="DB_VENDOR">
+<!--        为不同数据厂商起别名-->
+        <property name="MySQL" value="mysql"/>
+        <property name="Oracle" value="oracle"/>
+    </databaseIdProvider>
+
+    <!--    sql的映射文件-->
+<!--    注册配置文件-->
+<!--       resource : 类路径下-->
+<!--       url : 网络环境或磁盘路劲-->
+<!--    注册接口-->
+<!--       class:引用接口-->
+    <mappers>
+        <mapper resource="com/tunyl/demo/day2/mapper/EmployeeMapper.xml"/>
+<!--            class:的使用：-->
+<!--        用法一：必须把配置文件与接口放在同一个包中，且文件名相同-->
+        <!--        <mapper class="com.tunyl.demo.day2.mapper.EmployeeMapper"/>-->
+<!--        用法二：基于注解的注册也可以用calss注册映射-->
+        <mapper class="com.tunyl.demo.day2.mapper.EmployeeMapperAnnotation"/>
+<!--        批量注册-->
+<!--        <package name="com.tunyl.demo.day2.mapper"/>-->
+    </mappers>
+</configuration>

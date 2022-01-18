@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tunyl.demo.day3.mapper.EmployeeMapper">
+    <!--    namespace : 映射文件命名空间-->
+    <!--    id:标签唯一id-->
+    <!--    resultType:返回结果类型-->
+    <select id="selectByEmp" databaseId="mysql" resultType="com.tunyl.demo.day3.entity.Employee">
+        select * from employee where id = #{id}
+    </select>
+<!--   1.增、改 parameterType 属性可省略-->
+<!--   2.获取主键：mysql的自增组件，mybatis也是利用statement.getGeneratedKeys()：-->
+<!--      useGeneratedKeys=true 使用增加主键获取主键策略-->
+<!--      keyProperty:指定对应的属性，也可以是mybatis获取到主键后，将这个主键值封装给javabean的哪个属性-->
+
+
+    <insert id="addEmp" databaseId="mysql" parameterType="com.tunyl.demo.day3.entity.Employee" useGeneratedKeys="true" keyProperty="id">
+        insert into employee (last_name,email,gender) values (#{lastName},#{email},#{gender})
+    </insert>
+   <!--
+    oracle不支持自增：oracle使用序列模拟自增的
+    每次插入的数据的主键是从序列中拿到的值
+    select * from user_sequences;拿到用户的所有序列其中有EMPLOYEES_SEQ序列,查看序列下一个值 select EMPLOYEES_SEQ.nextval from dual;
+    -->
+    <insert id="addEmp" databaseId="oracle" parameterType="com.tunyl.demo.day3.entity.Employee">
+        <!--
+        1.selectKey：order=BEFORE-
+        keyProperty:指定对应的属性，将属性指个javabean的哪个属性
+        order=BEFORE :在当前sql之前运行
+        resultType:查询返回值的类型
+        运行顺序： selectKey 查询到下一个序列值，封装到javabean的id属性,再执行insert语句，从javabean的属性id中获取主键值
+        -->
+        <selectKey keyProperty="id" order="BEFORE" resultType="Integer">
+            select EMPLOYEES_SEQ.nextval from dual
+        </selectKey>
+
+        insert into employee (id,last_name,email,gender) values (#{id},#{lastName},#{email},#{gender})
+
+       <!--
+         2.selectKey: order=AFTER
+         运行顺序：先执行insert语名,再执行selectKey语句，查询序列当前值，封闭到javabean的id属性中
+         问题：如果插入多个值，则无法获取每个序列，只能使用EMPLOYEES_SEQ.currval最后一个插入id, 生产开发使用BEFORE
+         -->
+        <!--
+         <selectKey keyProperty="id" order="AFTER" resultType="Integer">
+             select EMPLOYEES_SEQ.currval from dual
+         </selectKey>
+        insert into employee(id,last_name,email,gender) values(employees_seq.nextval,#{lastName},#{email},#{gender})
+        -->
+    </insert>
+
+    <update id="updateEmp" parameterType="com.tunyl.demo.day3.entity.Employee">
+        update employee
+        set last_name=#{lastName},email=#{email},gender=#{gender}
+        where id=#{id}
+    </update>
+
+    <delete id="deleteByEmp">
+        delete from employee where id=#{id}
+    </delete>
+</mapper>
