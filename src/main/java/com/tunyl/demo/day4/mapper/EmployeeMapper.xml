@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tunyl.demo.day4.mapper.EmployeeMapper">
+    <!--    namespace : 映射文件命名空间-->
+    <!--    id:标签唯一id-->
+    <!--    resultType:返回结果类型-->
+    <select id="selectByEmp" databaseId="mysql" resultType="com.tunyl.demo.day4.entity.Employee">
+        select * from employee where id = #{idbac}
+    </select>
+
+    <select id="selectByIdAndLastName" databaseId="mysql" resultType="com.tunyl.demo.day4.entity.Employee">
+        select * from employee where id = #{param1} and last_name=#{param2}
+    </select>
+
+    <select id="selectByMap" databaseId="mysql" resultType="com.tunyl.demo.day4.entity.Employee">
+        select * from employee where id = #{id} and last_name=#{lastName}
+    </select>
+
+    <select id="selectByList" databaseId="mysql" resultType="com.tunyl.demo.day4.entity.Employee">
+        select * from employee where id = #{list[0]}
+    </select>
+
+    <select id="selectByArray" databaseId="mysql" resultType="com.tunyl.demo.day4.entity.Employee">
+        select * from employee where id = #{array[0]}
+    </select>
+
+    <select id="selectByLink" databaseId="mysql" resultType="com.tunyl.demo.day4.entity.Employee">
+        select * from employee where id = #{collection[0]}
+    </select>
+</mapper>
