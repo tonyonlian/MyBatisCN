@@ -32,6 +32,8 @@ public class MainTest {
             Map map = new HashMap();
             map.put("id", 1);
             map.put("lastName", "tom");
+            // 动态设置表名，sql中使用${tableName}获取参数值
+            map.put("tableName","employee");
             Employee employee2 = mapper.selectByMap(map);
             System.out.println(employee2);
 

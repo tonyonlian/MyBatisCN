@@ -40,4 +40,16 @@ package com.tunyl.demo.day4;
  *  value:为集合
  *  取出集合中的一个值 #{collection[0]}, #{list[0]} ,#{array[0]}
  *
+ *
+ *  -----------------
+ *  sql 中的两中取值方式：
+ *  #{} 获取值是预编译的方式，将参数设置到sql语句中 PreparedStatement,防sql注入 eg where id=?
+ *  ${} 获取的值直接拼装到sql语句中 eg: where id=1
+ *     原生jdbc不支持占位符的地方就可以使用${}进行取值
+ *     比如分表，按年分折表
+ *      select * from ${year}_salary where xxx;
+ *      排序字段的获取 xxx order by ${createTime} ${order} ;//order= desc|asc
+ *   #{} 的其他丰富的用法
+ *
+ *
  */

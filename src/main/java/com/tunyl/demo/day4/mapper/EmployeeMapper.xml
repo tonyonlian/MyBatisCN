@@ -14,7 +14,7 @@
     </select>
 
     <select id="selectByMap" databaseId="mysql" resultType="com.tunyl.demo.day4.entity.Employee">
-        select * from employee where id = #{id} and last_name=#{lastName}
+        select * from ${tableName} where id = #{id} and last_name=#{lastName}
     </select>
 
     <select id="selectByList" databaseId="mysql" resultType="com.tunyl.demo.day4.entity.Employee">
